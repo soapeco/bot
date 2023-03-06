@@ -19,6 +19,23 @@ module.exports = async (client) => {
         username: 'Bot Logs',
         embeds: [embed],
     });
+    
+    console.log(`Logged in as ${client.user.tag}!`);
+
+    // Check if the client is running in sharded mode
+    if (!client.shard) {
+    console.log(`Client is not running in sharded mode.`);
+    return;
+    }
+
+    // Fetch client values from all shards
+    client.shard.fetchClientValues('guilds.cache.size')
+    .then(results => {
+      console.log(`Total guilds: ${results.reduce((prev, guildCount) => prev + guildCount, 0)}`);
+    })
+    .catch(error => {
+      console.error(error);
+    });
 
     setInterval(async function () {
         const promises = [
@@ -46,3 +63,9 @@ module.exports = async (client) => {
 
     client.player.init(client.user.id);
 }
+
+// Kurtis Brisbois module replair for clientReady.js
+/* << Follow on twitter === @itskurtisb || Link: https://twitter.com/itskurtisb
+ *
+ * 03/05/2023
+*/
